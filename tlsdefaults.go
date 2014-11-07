@@ -1,4 +1,4 @@
-// Package tlsdefaults provides sensible defaults for TLS clients and servers
+// Package tlsdefaults provides sensible defaults for using TLS.
 package tlsdefaults
 
 import (

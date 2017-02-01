@@ -36,6 +36,15 @@ func NewListener(l net.Listener, pkfile, certfile string) (net.Listener, error) 
 // NewListenerAddr is like NewListener but uses the specified addr to generate
 // the cert.
 func NewListenerAddr(l net.Listener, addr string, pkfile, certfile string) (net.Listener, error) {
+	cfg, err := BuildListenerConfig(addr, pkfile, certfile)
+	if err != nil {
+		return nil, err
+	}
+	return tls.NewListener(l, cfg), nil
+}
+
+// BuildListenerConfig builds a tls.Config for a listener at the given addr
+func BuildListenerConfig(addr string, pkfile string, certfile string) (*tls.Config, error) {
 	host, _, err := net.SplitHostPort(addr)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to split host and port for %v: %v\n", addr, err)
@@ -72,7 +81,7 @@ func NewListenerAddr(l net.Listener, addr string, pkfile, certfile string) (net.
 	}
 	tlsConfig.Certificates = []tls.Certificate{cert}
 
-	return tls.NewListener(l, tlsConfig), nil
+	return tlsConfig, nil
 }
 
 // CertContext encapsulates the certificates used by a Server

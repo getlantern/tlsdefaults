@@ -110,7 +110,7 @@ func (ctx *CertContext) initServerCert(host string) (err error) {
 	}
 
 	fmt.Printf("Creating new server cert at: %s\n", ctx.ServerCertFile)
-	ctx.ServerCert, err = ctx.PK.TLSCertificateFor("Lantern", host, tenYearsFromToday, true, nil)
+	ctx.ServerCert, err = ctx.PK.TLSCertificateFor(tenYearsFromToday, true, nil, "Lantern", host)
 	if err != nil {
 		return
 	}
